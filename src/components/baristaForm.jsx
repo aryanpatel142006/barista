@@ -17,6 +17,7 @@ const BaristaForm = () => {
 
     const [feedback, setFeedback] = useState(""); // "correct" or "wrong"
     const [feedbackMsg, setFeedbackMsg] = useState("");
+    const [showAnswer, setShowAnswer] = useState(false);
 
     const ingredients = {
         temperature: ['hot', 'lukewarm', 'cold'],
@@ -34,6 +35,7 @@ const BaristaForm = () => {
         let randomDrinkIndex = Math.floor(Math.random() * drinks.length);
         setCurrentDrink(drinks[randomDrinkIndex].name);
         setTrueRecipe(drinks[randomDrinkIndex].ingredients);
+        setShowAnswer(false); // Hide answer on new drink
     };
 
     const onNewDrink = () => {
@@ -45,6 +47,7 @@ const BaristaForm = () => {
         });
         setFeedback("");
         setFeedbackMsg("");
+        setShowAnswer(false);
         getNextDrink();
     };
 
@@ -86,10 +89,38 @@ const BaristaForm = () => {
                     >
                         New Drink →
                     </button>
+                    <button
+                        type="button"
+                        className="button"
+                        style={{ backgroundColor: "#dbdbdb", color: "#3d2c0f" }}
+                        onClick={() => setShowAnswer(!showAnswer)}
+                    >
+                        {showAnswer ? "Hide Answer" : "Show Answer"}
+                    </button>
                 </div>
                 {feedback && (
                     <div id={feedback} style={{margin: "1em auto", width: "80%"}}>
                         {feedbackMsg}
+                    </div>
+                )}
+                {showAnswer && (
+                    <div className="answer-reveal" style={{
+                        background: "#fffbe6",
+                        borderRadius: "10px",
+                        margin: "1em auto",
+                        padding: "1em",
+                        width: "80%",
+                        boxShadow: "0 2px 8px rgba(138, 98, 12, 0.10)",
+                        color: "#3d2c0f",
+                        fontWeight: "500"
+                    }}>
+                        <strong>Answer:</strong>
+                        <ul style={{margin: "0.5em 0 0 0.5em", padding: 0}}>
+                            <li>Temperature: {trueRecipe.temperature}</li>
+                            <li>Milk: {trueRecipe.milk}</li>
+                            <li>Syrup: {trueRecipe.syrup}</li>
+                            <li>Blended: {trueRecipe.blended}</li>
+                        </ul>
                     </div>
                 )}
                 <div className="main">
